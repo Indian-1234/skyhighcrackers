@@ -1,0 +1,130 @@
+{% load socialaccount %}
+{% load static %}
+{%block content%}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Navigation Bar</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+
+    .navbar {
+      background-color: #f8f9fa;
+    }
+
+    .navbar-brand {
+      margin-right: 20px;
+    }
+
+    .navbar-brand img {
+      border-radius: 6px;
+      height: 40px;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      color: #444;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #000;
+    }
+
+    .navbar-toggler {
+      border: none;
+    }
+
+
+
+    .btn-google {
+      color: #fff;
+      background-color: #dc4e41;
+      border-color: #dc4e41;
+    }
+
+    .btn-google:hover {
+      color: #fff;
+      background-color: #ca4137;
+      border-color: #ca4137;
+    }
+
+    .navbar.fixed-top {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+
+    body {
+      padding-top: 70px;
+    }
+
+    /* Add this CSS rule for spacing between nav items */
+    .navbar-nav .nav-item .nav-link {
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'image2/logo.jpg' %}" alt="Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+        </li>
+        {% if user.username == "indian" %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'admins' %}"><i class="fas fa-user-shield"></i> Admin</a>
+  </li>
+{% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'mycart' %}"><i class="fas fa-shopping-cart"></i> My Cart</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'order' %}"><i class="fas fa-clipboard-list"></i> Order</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'payment' %}">
+            <i class="fas fa-money-check-alt"></i> Payment
+          </a>
+          
+        </li>
+        <li class="nav-item">
+          {% if user.is_authenticated %}
+          <a class="nav-link btn btn-google" >
+            {{ user.username }}
+
+          </a>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+       
+          {% else %}
+          <a class="nav-link btn btn-google" href="{% provider_login_url 'google' %}">
+            <i class="fab fa-google mr-2"></i> Sign in with Google
+          </a>
+          {%endif%}
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Add the rest of your HTML content here -->
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+{%endblock%}

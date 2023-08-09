@@ -1,0 +1,245 @@
+
+{% load static %}
+{% block content %}
+{% include 'loader.html' %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sky High Crackers</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tapestry&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mate+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fasthand&family=Fjalla+One&family=Lobster&family=Lumanosimo&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Croissant+One&family=Diplomata+SC&family=Faster+One&family=Fasthand&family=Fjalla+One&family=Lobster&family=Lumanosimo&display=swap"
+        rel="stylesheet">
+
+    <style>
+        h1 {
+            font-family: 'Tapestry', cursive;            font-size: 5px;
+        }
+
+        .container h4 {
+            font-family: 'Mate SC', serif;
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .lumanosimo-font {
+            font-family: 'Lumanosimo', cursive;
+        }
+
+        #banner img {
+            max-height: 300px;
+        }
+
+        .content-wrapper {
+            margin-top: 20px;
+        }
+
+        .card {
+            height: 100%;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-title {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            position: relative;
+        }
+
+        .card-title {
+            text-decoration: none;
+        }
+
+        .category-heading {
+            margin-bottom: 30px;
+            font-size: 50px;
+            color: #333;
+            animation-name: color-change;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes color-change {
+            0% {
+                color: #f31111;
+            }
+
+            50% {
+                color: #ff8800;
+            }
+
+            100% {
+                color: #333;
+            }
+        }
+
+        .category-card:nth-child(1) {
+            background-color: #f10bf1;
+        }
+
+        .category-card:nth-child(2) {
+            background-color: #f0250a;
+        }
+
+        .category-card:nth-child(3) {
+            background-color: #f09f08;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 20px 0;
+        }
+
+        .footer .container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer .text-muted {
+            font-size: 14px;
+        }
+
+        .carousel-item {
+            min-height: 280px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        @media (max-width: 768px) {
+            .ca {
+                margin: auto;
+            }
+
+            .carousel-item {
+                height: 200px;
+            }
+
+            .carousel-item img {
+                height: 200px;
+            }
+
+            .card {
+                height: auto;
+                width: 270px;
+                margin: auto;
+                margin-top: 10px;
+            }
+
+            h5 {
+                margin-bottom: 50px;
+
+            }
+
+            .card-title {
+                margin-bottom: 40px;
+            }
+
+        }
+
+        @media (min-width: 768px) {
+            .carousel-item img {
+                height: 400px;
+            }
+
+            .card {
+                height: 300px;
+                width: 230px;
+                margin: auto;
+                margin-left: 60px;
+            }
+
+
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'nav.html' %}
+    <div id="container" style="overflow: hidden;">
+        {% include 'banner.html' %}
+        {%include 'aboutandwhychoose.html'%}
+        {% include 'scroll.html' %}
+        {% include 'ani.html'%}
+        {%include 'bottomnav.html'%}
+    </div>
+    <hr />
+    <center>
+        <h1 class="category-heading" id="section">CATEGORIES</h1>
+    </center>
+    <div class="container">
+
+
+        <div class="row">
+            {% for pattas in crackers %}
+            <div class="col-md-4 mb-4 ca">
+                <div class="card" data-aos="fade-up"
+                    style="background-color: rgba(0, 0, 0, 0); color:white; border: none;;">
+                    <a href="crackers/{{ pattas.name }}">
+                        <img src="{{ pattas.image.url }}" class="card-img-top" alt="Ground Chakaar"
+                            style="border:2px solid white;">
+                        <div class="card-body">
+                            <h4 class="card-title" style="color: white;">{{ pattas.name }}</h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% include "aboutfeutures.html" %}
+
+    {% include 'footer.html'%}
+
+    {% endblock %}
+    {% include 'whatslogo.html'%}
+
+</body>
+
+</html>
+
+<script>
+    $('.carousel').carousel({
+        interval: 2000 // Change slide every 2 seconds (adjust as needed)
+    });
+
+    AOS.init();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+</body>
+
+</html>

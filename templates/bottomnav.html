@@ -1,0 +1,104 @@
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottom Navigation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+        .bottom-nav i {
+            color: rgb(29, 29, 248);
+        }
+        .bottom-nav {
+            display: none; /* Hide the navigation bar by default */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 10px;
+            z-index: 999;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            align-items: center;
+        }
+        .bottom-nav span{
+            color: black;
+        }
+
+        .bottom-nav i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        /* Media query to show the navigation bar only on mobile view */
+        @media screen and (max-width: 767px) {
+            .bottom-nav {
+                display: flex;
+            }
+        }
+        @media screen and (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="bottom-nav">
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="{% url 'order' %}">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Orders</span>
+        </a>
+        <a href="{% url 'mycart' %}">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+        {% if user.is_authenticated%}
+        <a href="#">
+            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="Profile Image" style="border-radius: 50%;height: 30px;width: 30px;">
+
+            <span>Profile</span>
+        {%else%}
+        <a href="{% provider_login_url 'google' %}">
+            <i class="fab fa-google mr-2"></i>
+            <span>login</span>
+        {%endif%}
+        </a>
+    </div>
+
+</body>
+</html>

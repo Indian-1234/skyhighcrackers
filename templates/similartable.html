@@ -1,0 +1,57 @@
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+  <title>Crackers</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .product-image {
+      max-width: 100px;
+      max-height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Crackers</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>no</th>
+          <th>img</th>
+          <th>name</th>
+          <th>actual price</th>
+          <th>disount</th>
+          <th>edit</th>
+          <th>delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in crack %}
+        <tr>
+            <td style="font-size:12.5px;"><tt>{{forloop.counter}}</tt></td>
+            <td>{% if i.image %}<img src="{{ i.image.url }}" alt="Product Image" class="product-image">{% endif %}</td>
+            <td>{{ i.name }}--{{i.similarname}}</td>
+          <td>{{ i.actual_price }}</td>
+          <td>{{ i.discount_price }}</td>
+          <td>
+            <a type="button" class="btn btn-primary" href="similaredit/{{i.id}}">Edit</a>
+            
+          </td>
+          <td><a type="button" class="btn btn-danger" href="similardel/{{i.id}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+{% endblock %}

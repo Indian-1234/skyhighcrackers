@@ -1,0 +1,308 @@
+from django.shortcuts import render, redirect, HttpResponse
+from .models import Crackers, carosel, similarCrackers,CartItem,Address,Orders
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.views.decorators.http import require_POST
+from django.template.loader import render_to_string
+
+
+from django.shortcuts import render
+from django.core.mail import send_mail
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! HOME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def home(request):
+    crackers = Crackers.objects.all()
+    slide = carosel.objects.all()
+    print(crackers)
+
+    if request.user.is_authenticated and not request.session.get('welcome_email_sent', False):
+        user = request.user.username
+        email = request.user.email
+        msg = "Welcome to firecrackers!"
+        send_mail("Hi " + user, msg, 'your_email@gmail.com', [email])
+        request.session['welcome_email_sent'] = True
+
+    print(crackers)
+    if request.user.is_staff:
+        yes = "yes"
+        return render(request, "home.html", {"crackers": crackers, "yes": yes,"slide": slide})
+
+    return render(request, "home.html", {"crackers": crackers, "slide": slide})
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ORDER PAGE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def crackeradminview(request):
+    crackers=Crackers.objects.all()
+    return render(request,'crackerstable.html',{"crack":crackers})
+def similaradminview(request):
+    crackers=similarCrackers.objects.all()
+    return render(request,'similartable.html',{"crack":crackers})
+def similardel(request,id):
+    mydata=similarCrackers.objects.get(id=id)
+    mydata.delete()
+    return redirect("uploadsimilarcrackers")
+def crackdel(request,id):
+    mydata=Crackers.objects.get(id=id)
+    mydata.delete()
+    return redirect("uploadcrackers")
+@login_required(login_url="https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?client_id=751998528002-etkvvtadiufcc1941vrp7bj1tr3fg3qc.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Faccounts%2Fgoogle%2Flogin%2Fcallback%2F&scope=email%20profile&response_type=code&state=wbLpUHwBfgE9&service=lso&o2v=1&flowName=GeneralOAuthFlow")
+
+def order(request):
+    user=request.user.username
+    orderss=Orders.objects.filter(username=user)
+    return render(request, 'order.html',{"order":orderss})
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PRODUCT LIST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def productselect(request, productselect):
+    if similarCrackers.objects.filter(name__name=productselect).exists():
+        obj = similarCrackers.objects.filter(name__name=productselect)
+        print(obj)
+
+        cart = CartItem.objects.all()
+        product_names = [item.product_name for item in cart]  # Get a list of product_names from CartItem
+
+        cart1 = similarCrackers.objects.filter(similarname__in=product_names)  # Filter similarCrackers based on product_names
+        print("YYYYyy")
+        print(cart1)
+        li=[]
+
+        for i in cart1:
+            p=i.similarname
+            li.append(p)
+        print("hhhhhhhh")
+        for p in obj:
+            if p.similarname in li:
+                print("yyyyyyyyyyyyyyyyyyyesssssssssssssssssssss")
+
+        yes = ""
+        no = ""  # Initialize no as an empty string
+        if not cart1:
+            no = "no"  # If cart1 is empty, set no to "no"
+        if cart:
+            yes = "yes"
+        return render(request, "productlist.html", {"productlist": obj, "yes": yes, "no": li})
+    else:
+        return HttpResponse("<center><h1>NO PRODUCTS</h1></center>")
+
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SIMILARCRACKERS UPLOAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def similarcrackers(request):
+    crackers = Crackers.objects.all()
+    li = [cracker.name for cracker in crackers]
+    if request.method == 'POST':
+        name = request.POST.get("cracker_type")
+        image = request.FILES.get("image")
+        similarname = request.POST.get("similar_name")
+        actual_price = request.POST.get("actual_price")
+        discount_price = request.POST.get("discount_price")
+        content = request.POST.get("content")
+
+        if similarCrackers.objects.filter(similarname=similarname).exists():
+            error_message = "Similar cracker with the same name already exists."
+            return render(request, "similarcrackers.html", {"error_message": error_message, "obj": li})
+        else:
+            cracker = Crackers.objects.get(name=name)
+            crac = similarCrackers(name=cracker, image=image, similarname=similarname, actual_price=actual_price, discount_price=discount_price, content=content)
+            crac.save()
+            success = "Successfully added."
+            return render(request, "similarcrackersupload.html", {"obj": li, "success": success})
+
+    return render(request, "similarcrackersupload.html", {"obj": li})
+
+
+
+def admins(request):
+    return render(request,"admin.html")
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BANNER UPDATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def bannerupdate(request):
+    if request.method == 'POST':
+        for key in request.FILES:
+            image = request.FILES[key]
+            carosel_obj = carosel.objects.get(id=key)
+            carosel_obj.slideimage = image
+            carosel_obj.save()
+        return redirect('bannerupdate')  # Redirect to the same page after updating the images
+
+    obj=carosel.objects.all()
+    return render(request,"bannerupdate.html",{"banners":obj})
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UPLOAD CRACKERS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def uploadcrackers(request):
+    obj=Crackers.objects.all()
+    if request.method == 'POST':
+        name = request.POST.get("crackerName")
+        image = request.FILES.get("crackerImage")
+
+        if Crackers.objects.filter(name=name).exists():
+            error_message = "Cracker with the same name already exists."
+            return render(request, "crakersupload.html", {"error_message": error_message})
+
+        cracker = Crackers(name=name, image=image)
+        cracker.save()
+
+    crackers = Crackers.objects.all()
+    return render(request, "crakersupload.html", {"cracker": crackers})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ADD TO CART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+@login_required(login_url="https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?client_id=751998528002-etkvvtadiufcc1941vrp7bj1tr3fg3qc.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Faccounts%2Fgoogle%2Flogin%2Fcallback%2F&scope=email%20profile&response_type=code&state=wbLpUHwBfgE9&service=lso&o2v=1&flowName=GeneralOAuthFlow")
+
+def add_to_cart(request):
+
+    if request.method == 'POST':
+        for key,value in request.POST.items():
+            print("&&&&&&&&&&&&")
+            print(value )
+
+            if key.startswith('add_to_cart_'):
+                product_id = key.replace('add_to_cart_', '')
+                product_name_key = 'product_name_' + product_id
+                print("****")
+                print(product_name_key)
+                product_name = request.POST.get(product_name_key)
+                obj=similarCrackers.objects.get(similarname=product_name)
+
+                username = request.POST.get('username')
+                # Create a new cart item instance
+                cart_item = CartItem(
+                    product_id=product_id,
+                    product_name=obj.similarname,
+                    product_price=obj.actual_price,
+                    product_discount=obj.discount_price,
+                    image=obj.image,
+                    username=username
+                )
+                username = request.POST.get('username')
+                obj = similarCrackers.objects.get(similarname=product_name)
+                redirect_to = obj.name
+                cart_item.save()
+
+        return redirect('productselect',productselect=redirect_to)
+
+    return redirect('home')
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! mycart !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+@login_required(login_url="https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?client_id=751998528002-etkvvtadiufcc1941vrp7bj1tr3fg3qc.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Faccounts%2Fgoogle%2Flogin%2Fcallback%2F&scope=email%20profile&response_type=code&state=wbLpUHwBfgE9&service=lso&o2v=1&flowName=GeneralOAuthFlow")
+
+def mycart_view(request):
+    user = request.user.username
+    id = request.user.id
+    print(user)
+
+    context = {}  # Initialize the context variable
+
+    if CartItem.objects.filter(username=user).exists():
+        obj = CartItem.objects.filter(username=user)
+        add = Address.objects.filter(User=user)
+        context['cart_items'] = obj
+        context['add'] = add
+        add = Address.objects.filter(User=user)
+        context['add'] = add
+        return render(request, 'my-cart.html', context)
+    else:
+        error = "NO PRODUCT"
+        return HttpResponse("<center><h1>NO PRODUCTS</h1></center>")
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Address !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def address(request):
+    user=request.user.username
+    if request.method == 'POST':
+
+        name = request.POST.get('name')
+        state = request.POST.get('state')
+        email = request.POST.get('email')
+        whatsapp = request.POST.get('whatsapp')
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        landmark = request.POST.get('landmark')
+        pincode = request.POST.get('pincode')
+
+        # Create a new Contact object
+        contact = Address(
+            name=name,
+            state=state,
+            email=email,
+            whatsapp=whatsapp,
+            mobile=mobile,
+            address=address,
+            landmark=landmark,
+            pincode=pincode,
+            User=user
+        )
+        contact.save()
+        return redirect("mycart")
+        # Redirect to a success page or do further processing
+
+    return render(request, 'address.html')
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! confirm order !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def confirm_order(request):
+    user = request.user.username
+
+    try:
+        address = Address.objects.get(User=user)
+    except Address.DoesNotExist:
+        return HttpResponse("Address not found for the user.")
+
+    if request.method == 'POST':
+        cart_items = CartItem.objects.filter(username=user)
+
+        for item in cart_items:
+            print(item)
+            print("##########")
+            product_id = item.id
+            quantity = request.POST.get('quantity_' + str(product_id))
+            product_name = request.POST.get('product_name_' + str(product_id))
+            product_price = request.POST.get('product_price_' + str(product_id))
+            product_discount = request.POST.get('product_discount_' + str(product_id))
+            total_amount = request.POST.get('total_' + str(product_id))
+
+            # Create a new order in the Orders model
+            if product_name and quantity:
+                order = Orders(
+                    username=user,
+                    quantity=quantity,
+                    product_name=product_name,
+                    product_price=product_price,
+                    product_discount=product_discount,
+                    image=item.image.url[7:],
+                    total=total_amount
+                )
+                order.save()
+
+                # Delete the cart item
+                CartItem.objects.filter(id=product_id).delete()
+
+        # Rest of your code
+        # ...
+
+        add = Address.objects.get(User=user)
+        email = add.email
+        orderss=Orders.objects.filter(username=user)
+
+        context = {
+            'user': user,
+            'address': address,
+            'order':orderss
+        }
+        email_content = render_to_string('email_templates/order_conformation.html', context)
+
+        send_mail(
+            subject='Order Confirmation',
+            message='',
+            html_message=email_content,
+            from_email='your_email@gmail.com',
+            recipient_list=[email]
+        )
+
+        return redirect('order')
+
+    return HttpResponse("Method not allowed")

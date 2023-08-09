@@ -1,0 +1,92 @@
+{% load static %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Order Status</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            /* Custom CSS styles */
+            body {
+                font-family: 'Roboto', sans-serif;
+            }
+            h1 {
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 700;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table img {
+                max-width: 50px;
+                max-height: 50px;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+            .discount {
+                color: green;
+            }
+            /* Mobile view styles */
+            @media (max-width: 576px) {
+                .table-responsive {
+                }
+            }
+        </style>
+    </head>
+<body>
+    {%include "nav.html"%}
+    <div class="container">
+        <h1>Order Status</h1>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>Username</th>
+                        <th>Quantity</th>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Product Discount</th>
+                        <th>Total</th>
+                        <th>Deliverd date</th>
+                        <th>Date</th>
+                        <th>Order Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in delivered_orders %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ order.data.username }}</td>
+                        <td>{{ order.data.quantity }}</td>
+                        <td><img src="{{ order.data.image.url }}" alt="{{ order.product_name }}"></td>
+                        <td>{{ order.data.product_name }}</td>
+                        <td>₹{{ order.data.product_price }}</td>
+                        <td class="discount">{{ order.data.product_discount }}% OFF</td>
+                        <td>₹{{ order.data.total }}</td>
+                        <td>₹{{ order.delivery_date }}</td>
+                        <td>{{ order.data.orderdate }}</td>
+                        <td>
+                            <h5>{% if order.data.order_status == "DELIVERED" %}DELIVERED{%else%}PROBLEM{% endif %}</h5>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% include 'bottomnav.html'%}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}

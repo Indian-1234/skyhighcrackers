@@ -1,0 +1,291 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Banner</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cooper+Black&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arvo&family=Bungee+Spice&family=Croissant+One&family=Diplomata+SC&family=Faster+One&family=Fasthand&family=Fjalla+One&family=Kanit&display=swap"
+    rel="stylesheet">
+    <script>
+    
+      function scrollToDiv() {
+        // Get the target div element
+        const targetDiv = document.getElementById("section");
+  
+        // Scroll to the top of the target div
+        targetDiv.scrollIntoView({ behavior: 'smooth' });
+      }
+    </script>
+  <style>
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fasthand', cursive;
+      background-color: #f8f9fa;
+    }
+
+    .banner-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      margin-top: 60px !important;
+    }
+
+    .banner-image {
+      width: 100%;
+      height: 100%;
+    }
+
+    .company-png {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      bottom: 80px;
+      left: 50px;
+
+    }
+
+    .company-png a {
+      font-size: 20px;
+      color: rgb(252, 252, 246)
+    }
+
+    .company-logo {
+      position: absolute;
+      top: 70px;
+      right: 300px;
+      width: 200px;
+      /* Adjust the size of the logo as needed */
+      height: 220px;
+    }
+
+    .company-name {
+      position: absolute;
+      top: 150px;
+      right: 100px;
+      width: 600px;
+      /* Adjust the size of the logo as needed */
+      height: 400px;
+    }
+
+    .words {
+      position: absolute;
+      top: 15px;
+      left: 400px;
+    }
+
+    .shop-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Lobster', cursive;
+      font-size: 36px;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      max-width: 80%;
+      /* Adjust the maximum width as needed */
+      text-align: center;
+    }
+
+    p {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 50px;
+      color: #28a745;
+
+
+    }
+
+    .but {
+      position: absolute;
+      bottom: 30px;
+      left: 190px;
+    }
+
+    @media (max-width: 768px) {
+      .banner-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        margin-top: 60px !important;
+      }
+
+      .banner-image {
+        width: 400px;
+        height: 300px;
+        bottom: 0px;
+      }
+
+      .company-logo {
+        position: absolute;
+        top: 80px;
+        right: 65px;
+        width: 100px;
+        /* Adjust the size of the logo as needed */
+        height: 90px;
+      }
+
+      /* Adjust the size of the logo for mobile */
+
+      .company-name {
+        position: absolute;
+        top: 120px;
+        right: 30px;
+        width: 190px;
+        /* Adjust the size of the logo as needed */
+        height: 150px;
+      }
+
+      .words {
+        position: absolute;
+        top: 10px;
+        left: 95px;
+        font-size: 20px;
+
+      }
+
+      .company-png {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        top: 190px;
+        left: 10px;
+
+      }
+
+      #text1,
+      #text2 {
+        position: absolute;
+        font-size: 50px;
+        font-family: "Raleway", sans-serif;
+        left: 30px;
+
+      }
+
+      .shop-name {
+        font-size: 24px;
+        /* Adjust the font size for mobile */
+      }
+
+      .company-png a {
+
+        font-size: 10px !important;
+
+      }
+
+      .but {
+        left:50px !important;
+        bottom: 10px !important;
+        font-size: 10px !important;
+        padding: 2px;
+      }
+
+    }
+
+    @import url("https://fonts.googleapis.com/css?family=Raleway:900&display=swap");
+
+
+    #containe {
+      position: absolute;
+      width: 100vw;
+      height: 80pt;
+      top: 100px;
+      left: 100px;
+
+      filter: url(#threshold) blur(0.6px);
+    }
+
+    #text1,
+    #text2 {
+      position: absolute;
+      font-size: 50px;
+      font-family: "Raleway", sans-serif;
+      top: 40px;
+      left: 30px;
+
+    }
+
+    /* Styles for the container */
+
+
+    /* Styles for the links */
+  
+
+
+
+    .company-png a:hover {
+      text-decoration: underline;
+    }
+
+    /* Styles for the success button */
+    .btn {
+      display: inline-block;
+      color: #fff;
+      border: none;
+
+
+    }
+
+    .btn-success {
+      background-color: #28a745;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+    .banner-image-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px; /* Adjust the height of the zigzag border as needed */
+  background-image: linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 50%, #ffffff 50%, #ffffff 75%, transparent 75%, transparent);
+  background-size: 10px 20px; /* Adjust the background-size to control the zigzag pattern */
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="banner-container">
+<div class="banner-image-container">
+    <img class="banner-image" src="https://img.freepik.com/free-vector/elegant-shubh-deepavali-festival-banner-with-text-space-vector_1017-40299.jpg?size=626&ext=jpg" alt="Website Banner">
+  </div>    <img class="company-logo" src="{% static 'image2/logo.png' %}" alt="Company Logo">
+    <img class="company-name" src="{% static 'image2/name.png' %}" alt="Company Logo">
+    <p class="words" style="white-space: nowrap;">WELCOME TO SKY HIGH CRACKERS</p>
+    <div class="company-png" >
+
+
+          <a href="#" class="" style="">GIFT BOXES</a><br>
+
+        <a href="#" class="" style="">THALA DEEPAWALI SPECIAL OFFERS!</a><br>
+
+    </div>
+
+    <p><button href="#" class=" btn btn-success but" onclick="scrollToDiv()" id="myBtn" title="Scroll to Div">View Products</button><br></p>
+
+
+
+
+
+  </div>
+
+  <!-- Rest of your website content goes here -->
+
+</body>
+
+</html>

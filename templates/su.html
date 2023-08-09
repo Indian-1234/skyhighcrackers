@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  /* Apply basic styling to the image container */
+.banner-image-container {
+  display: inline-block;
+  position: relative;
+}
+
+/* Style the image */
+.banner-image {
+  display: block;
+  max-width: 100%;
+}
+
+/* Create the zigzag border using a pseudo-element (::after) */
+.banner-image-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px; /* Adjust the height of the zigzag border as needed */
+  background-image: linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 50%, #ffffff 50%, #ffffff 75%, transparent 75%, transparent);
+  background-size: 10px 20px; /* Adjust the background-size to control the zigzag pattern */
+}
+
+</style>
+<body>
+  <div class="banner-image-container">
+    <img class="banner-image" src="https://img.freepik.com/free-photo/psychedelic-paper-shapes-with-copy-space_23-2149378246.jpg?w=900&t=st=1690697400~exp=1690698000~hmac=4322f7592fdd0de7876530da9da352d39d040eaa30ca349f1ddd92b670e9e983" alt="Website Banner">
+  </div>
+  
+</body>
+</html>

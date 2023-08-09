@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Carousel with Download Link</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      overflow: hidden;
+    }
+
+    .carousel {
+      opacity: .3;
+      position: absolute;
+      display: flex;
+      animation: carouselAnimation 10s linear infinite;
+    }
+
+    .carousel img {
+      width: 100px;
+      height: 100px;
+      margin: 0 10px;
+    }
+
+    @keyframes carouselAnimation {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-100px * 10)); /* 100px width of each image, 10 images */
+      }
+    }
+
+    .download-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .download-link{
+      position: absolute;
+      left: 500px;
+      top:10px;
+      align-items: center;
+      text-align: center;
+
+    }
+    .download-link a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .download-link a:hover {
+      background-color: #0056b3;
+    }
+
+    .download-link i {
+      margin-right: 5px;
+    }
+    @media screen and (max-width: 768px) {
+      .download-link{
+      position: absolute;
+      left: 90px;
+      top:10px;
+      align-items: center;
+      text-align: center;
+
+    }
+    .carousel {
+      opacity: .5;
+    }
+
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="carousel-container">
+      <div class="carousel">
+        <img src="{% static 'image2/im1.png'%}" alt="Image 1">
+        <img src="{% static 'image2/im2.png'%}" alt="Image 2">
+        <img src="{% static 'image2/im3.png'%}" alt="Image 3">
+        <img src="{% static 'image2/im4.png'%}" alt="Image 4">
+        <img src="{% static 'image2/im1.png'%}" alt="Image 1">
+        <img src="{% static 'image2/im2.png'%}" alt="Image 2">
+        <img src="{% static 'image2/im3.png'%}" alt="Image 3">
+        <img src="{% static 'image2/im4.png'%}" alt="Image 4">
+        <img src="{% static 'image2/im1.png'%}" alt="Image 1">
+        <img src="{% static 'image2/im2.png'%}" alt="Image 2">
+      
+        
+      </div>
+      <div class="download-link">
+        <center><a href="path/to/your/file.pdf" download>
+          <i class="fas fa-download"></i> Download PDF
+        </a></center>
+      </div>
+    </div>
+  
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+    // Clone the images to create a seamless scrolling effect
+    const carousel = document.querySelector('.carousel');
+    const images = carousel.querySelectorAll('img');
+  
+    for (let i = 0; i < 9; i++) { // Clone 9 times to create 10 images in total
+      carousel.appendChild(images[i].cloneNode(true));
+    }
+  
+    // Smooth scrolling
+    const carouselContainer = document.querySelector('.carousel-container');
+    const carouselWidth = carousel.scrollWidth;
+  
+    function scrollCarousel() {
+      carousel.scrollTo({
+        left: carousel.scrollLeft + 1,
+        behavior: 'smooth'
+      });
+  
+      // Restart scrolling from the beginning once it reaches the end
+      if (carousel.scrollLeft >= carouselWidth - carouselContainer.offsetWidth) {
+        carousel.scrollTo({
+          left: 0,
+          behavior: 'auto'
+        });
+      }
+    }
+  
+    setInterval(scrollCarousel, 10); // Adjust the interval for the desired scrolling speed
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+  <title>Crackers</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .product-image {
+      max-width: 100px;
+      max-height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Crackers</h1>
+    <table class="table">
+      <thead>
+        <tr>
+
+          <th>no</th>
+          <th>img</th>
+          <th>name</th>
+          <th></th> <!-- Empty column for update and delete buttons -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in crack %}
+        <tr>
+            <td style="font-size:12.5px;"><tt>{{forloop.counter}}</tt></td>
+          <td><img src="{{ i.image.url }}" alt="Product Image" class="product-image"></td>
+          <td>{{ i.name }}</td>
+          <td>
+            <button type="button" class="btn btn-primary" onclick="editRow(this)">Edit</button>
+            <a type="button" class="btn btn-danger" href="crackaddv/{{i.id}}">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+{% endblock %}

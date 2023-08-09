@@ -1,0 +1,35 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .whats{
+                position: fixed;
+                bottom: 120px;
+                right: 20px;
+                z-index: 1;
+            }
+             .whats img{
+                border-radius:50%;
+                z-index: 1;
+            }
+            @media(max-width:768px){
+                .whats a{
+                position: fixed;
+                bottom: 13%;
+                left: 6px;
+            }
+            }
+</style>
+<body>
+    <div class="whats">
+        <a href="https://wa.me/message/K477QDZ4CRFZJ1" target="_blank" class="whatsapp-icon">
+            <img src="{%static 'image2/w.gif' %}" alt="WhatsApp Icon">
+        </a>
+    </div>
+</body>
+</html>

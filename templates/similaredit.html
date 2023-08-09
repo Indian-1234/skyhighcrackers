@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>iers EDIT</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        .small-image {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+
+    <div class="container">
+        <a href="{% url 'similaradminview' %}" class="btn btn-primary">delete and edit</a>
+        {% if success %}
+            <div class="alert alert-success" role="alert">
+                {{ success }}
+            </div>
+        {% endif %}
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        <h1>Similar iers Upload</h1>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="ier_type">ier Type</label>
+                <select class="form-control" id="ier_type" name="cracker_type">
+                    {% for j in name %}
+                        <option value="{{ j }}" {% if j == form.instance.name %}selected{% endif %}>{{ j }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image">Current Image</label>
+                <br>
+                {% if form.image %}
+                    <!-- Add a query parameter to the image URL to force reloading -->
+                    <img src="{{ form.image.url }}"
+                        alt="Current Image" class="small-image">
+              
+                        {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="new_image">Upload New Image</label>
+                <input type="file" class="form-control-file" id="new_image" name="image">
+            </div>
+           
+            <div class="form-group">
+                <label for="similar_name">Similar Name</label>
+                <input type="text" class="form-control" id="similar_name" name="similar_name"
+                    value="{{ form.similarname }}" required>
+            </div>
+            <div class="form-group">
+                <label for="actual_price">Actual Price</label>
+                <input type="text" class="form-control" id="actual_price" name="actual_price"
+                    value="{{ form.actual_price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="discount">Discount</label>
+                <input type="text" class="form-control" id="discount" name="discount_price"
+                    value="{{ form.discount_price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <input type="text" class="form-control" id="content" name="content" value="{{ form.content }}"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        // Get the file input element
+        const fileInput = document.getElementById('new_image');
+    
+        // Get the URL of the current image from the server-side context (e.g., Django template context)
+        const currentImageUrl = "{{ form.instance.image.url }}";
+    
+        // Create a new image element
+        const imageElement = new Image();
+        imageElement.src = currentImageUrl;
+    
+        // Listen for the image element to load
+        imageElement.onload = function() {
+            // Once the image is loaded, set the file input field's value to the image's URL
+            fileInput.setAttribute('data-image-url', currentImageUrl);
+        };
+    </script>
+    
+</body>
+</html>

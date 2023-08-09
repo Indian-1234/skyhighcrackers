@@ -1,0 +1,244 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0>
+    <title>Product List</title>
+    <link rel=" stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for premium look */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid #dddddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: red;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+        }
+
+        .discount {
+            color: red;
+            transition: color 0.3s ease;
+        }
+
+        .amount,
+        .total {
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .quantity {
+            width: 60px;
+            transition: border-color 0.3s ease;
+        }
+
+        .quantity:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        table {
+            border: .5px solid yellow;
+        }
+    </style>
+</head>
+
+<body onload="calculateTotals()">
+    {% include 'nav.html' %}
+
+    <div class="container">
+        <div class="row">
+            <center>
+                <h1>Product List</h1>
+            </center>
+            <div style="display: flex;flex-direction:row;">
+
+                <div class="table-responsive" style="margin-right: 40px;">
+                    <form action="{% url 'confirm_order' %}" method="POST">
+                        {% csrf_token %}
+                        <table class="stripped">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product Name</th>
+                                    <th>Actual Price</th>
+                                    <th>Discount OFF</th>
+                                    <th>Amount</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if error %}
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <img src="{{ item.image.url }}" alt="Product Image"
+                                            style="width: 70px;height: 50px;border-radius: 3px; cursor: pointer;"
+                                            onclick="showImage('{{ item.image.url }}')">
+                                    </td>
+                                    <td style="color: green;">{{ item.product_name }}</td>
+                                    <td>₹{{ item.product_price }}</td>
+                                    <td class="discount">{{ item.product_discount }}% off</td>
+                                    <td class="amount">₹0.00</td>
+                                    <td>
+                                        <input type="number" class="quantity" min="1" value="1" style="width: 60px;"
+                                            name="quantity_{{ item.id }}" oninput="calculateTotal(this)">
+                                    </td>
+                                    <td class="total" style="color: blue;" name="total">₹0.00</td>
+                                    <td>
+                                        <input type="hidden" name="product_id" value="{{ item.id }}">
+                                        <input type="hidden" name="product_name_{{ item.id }}"
+                                            value="{{ item.product_name }}">
+                                        <input type="hidden" name="product_price_{{ item.id }}"
+                                            value="{{ item.product_price }}">
+                                        <input type="hidden" name="product_discount_{{ item.id }}"
+                                            value="{{ item.product_discount }}">
+                                        <input type="hidden" class="totals" name="total_{{ item.id }}" value="">
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </form>
+                    </div>
+                    <div class="total_and_buy card" style="width: 200px;height:200px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Total</h5>
+                            <p class="card-text" id="totalAndBuySection">₹0.00</p>
+                            <input type="button" class="btn btn-success buy-all-btn" value="BUY ALL">
+                        </div>
+                    </div>
+
+
+            </div>
+
+        </div>
+        <div>
+            {% include 'youraddress.html' %}
+        </div>
+
+
+        <script>
+function calculateTotals() {
+    const rows = document.querySelectorAll("tbody tr");
+    let totalPrice = 0;
+
+    rows.forEach(row => {
+        const actualPrice = parseFloat(row.querySelector("td:nth-child(3)").textContent.replace('₹', ''));
+        const discountPercentage = parseFloat(row.querySelector(".discount").textContent.replace('% off', ''));
+        const quantity = parseInt(row.querySelector(".quantity").value);
+
+        const discountedAmount = actualPrice * (1 - discountPercentage / 100);
+        const total = discountedAmount * quantity;
+
+        row.querySelector(".amount").textContent = "₹" + discountedAmount.toFixed(2);
+        row.querySelector(".total").textContent = "₹" + total.toFixed(2);
+        row.querySelector(".totals").value = total.toFixed(2);
+
+        totalPrice += total;
+    });
+
+    const totalAndBuySection = document.getElementById("totalAndBuySection");
+    totalAndBuySection.textContent = "₹" + totalPrice.toFixed(2);
+}
+
+
+function calculateTotal(input) {
+    const row = input.closest("tr");
+    let totalPrice = 0;
+    const actualPrice = parseFloat(row.querySelector("td:nth-child(3)").textContent.replace('₹', ''));
+    const discountPercentage = parseFloat(row.querySelector(".discount").textContent.replace('% off', ''));
+    const quantity = parseInt(row.querySelector(".quantity").value);
+
+    const discountedAmount = actualPrice * (1 - discountPercentage / 100);
+    const total = discountedAmount * quantity;
+
+    row.querySelector(".amount").textContent = "₹" + discountedAmount.toFixed(2);
+    row.querySelector(".total").textContent = "₹" + total.toFixed(2);
+    row.querySelector(".totals").value = total.toFixed(2);
+    totalPrice += total;
+
+    const totalAndBuySection = document.getElementById("totalAndBuySection");
+    totalAndBuySection.textContent = "₹" + totalPrice.toFixed(2);
+}
+
+
+            function showImage(imageUrl) {
+                // Open a new window or popup to display the larger image
+                window.open(imageUrl);
+            }
+
+            const buyAllButton = document.querySelector(".buy-all-btn");
+
+            buyAllButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                const confirmOrder = confirm("Are you sure you want to confirm the order for all products?");
+                if (confirmOrder) {
+                    const form = buyAllButton.closest("form");
+                    form.submit();
+                }
+            });
+
+            window.addEventListener("DOMContentLoaded", function() {
+    calculateTotals(); // Calculate totals when the page loads
+
+    const quantityInputs = document.querySelectorAll(".quantity");
+    quantityInputs.forEach(input => {
+        input.addEventListener("input", function() {
+            calculateTotals(); // Recalculate the totals for all products when the quantity changes
+        });
+    });
+});
+        </script>
+
+</body>
+
+</html>
+{% endblock %}

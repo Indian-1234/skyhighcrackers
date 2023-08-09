@@ -1,0 +1,65 @@
+<!-- loader.html -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<style>
+    /* Loader styles */
+    /* styles.css (or style block in the template) */
+.loading-spinner {
+  /* Set the spinner container to cover the entire screen */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background overlay */
+  z-index: 9999; /* Make sure it appears above other content */
+}
+
+.spinner {
+  /* Example of a simple CSS spinner */
+
+  animation: spin 1s linear infinite;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+</style>
+
+<div id="loading-spinner" class="loading-spinner">
+
+    <div class="spinner"><div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+  </div>
+
+<script>
+    // Show the loader only on initial page load
+    // window.addEventListener("load", function () {
+    //     document.querySelector(".loader-container").style.visibility = "hidden";
+    // });
+
+</script>
+<!-- my_template.html -->
+<script>
+    // JavaScript to hide the spinner once the page has loaded
+    window.onload = function () {
+      var spinner = document.getElementById('loading-spinner');
+      spinner.style.display = 'none';
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>

@@ -1,0 +1,100 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Company Name</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .logo {
+            max-width: 200px;
+        }
+        .containe {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px;
+            text-align: left;
+        }
+        .bullet-points {
+            list-style: none;
+            padding: 0;
+        }
+        .bullet-points li {
+            padding: 5px 0;
+        }
+        .content li{
+            color: black;
+        }
+        .p{
+            font-family: 'Raleway', sans-serif;
+        }
+        @media screen and (max-width:768px) {
+          .container{
+            flex-direction: column;
+          }
+        }
+        .p{
+            text-align: justify;
+            font-size: 20px;
+            color: black;
+        }
+       
+    </style>
+</head>
+<body>
+
+    <div class="containe" style="background-color: yellow;">
+        <div class="content">
+          <center><img class="logo" src="{%static 'image2/logo.png' %}" alt="Your Company Logo"></center>
+
+            <div class="header" style="color:orangered">About Us</div>
+            <p class="p">Welcome to our sky high crackers website! We are excited to launch our new online store, offering a wide range of high-quality crackers at great prices. Our mission is to provide our customers with the best selection of crackers, all in one convenient location.
+
+                We are passionate about crackers and believe that everyone should have access to the best products at affordable prices. That’s why we’ve worked hard to source the finest crackers from around the world and bring them directly to you.
+                
+                To celebrate our launch, we are offering some amazing deals and discounts on our products. Don’t miss out on this opportunity to stock up on your favorite crackers at unbeatable prices.
+                
+                We are proud to offer shipment of our products all over Tamil Nadu, so you can enjoy our delicious crackers no matter where you are located.
+                
+                Our store is located at 4/273-11/7, Sivakasi to Virudhunagar main road, Amathur, Virudhunagar-626005. You can also reach us by phone at 9087276981 or by email at skyhighcrackers@gmail.com.
+                
+                Thank you for choosing our crackers website. We look forward to serving you and providing you with the best shopping experience possible.</p>
+            <p class="p">Our key features:</p>
+          
+        </div>
+
+        <div class="content">
+            <center><img class="logo" src="{%static 'image2/bulk.png' %}" alt="Your Company Logo"></center>
+
+            <div class="header"  style="color:orangered">Why Choose Us</div>
+            <ul class="bullet-points">
+                <li>✔️ Innovative range of crackers</li>
+                <li>✔️ Supreme quality at an affordable price</li>
+                <li>✔️ Best Indian brand in fountains & children fancy</li>
+                <li>✔️ Dedicated customer care service</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
